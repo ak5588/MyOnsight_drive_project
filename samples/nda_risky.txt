@@ -1,0 +1,48 @@
+This Non-Disclosure Agreement (“Agreement”) is between Alpha Corp and Beta LLC effective August 1, 2025. The parties wish to explore a business opportunity and may exchange information.
+
+Purpose. The parties may share information for evaluating a potential partnership.
+
+Use. Receiving Party may use the information for the Purpose.
+
+Return/Destruction. Upon request, Receiving Party will return or destroy information.
+
+Term. This Agreement starts on the Effective Date and auto-renews for 24 months unless either party terminates.
+
+General.
+a. Venue. Any disputes shall be brought in the courts of California.
+b. Notices. Notices must be in writing.
+
+The parties sign below.
+
+Alpha Corp
+Beta LLC
+
+Notes: This text intentionally lacks strong confidentiality terms, governing law (Delaware), indemnity, limitation of liability cap, injunctive relief, IP ownership/assignment, termination for convenience, and confidentiality carve-outs. It also includes an auto-renewal over 12 months and mentions California venue.
+
+samples/nda_good.txt
+This Non-Disclosure Agreement (“Agreement”) is entered into as of August 1, 2025 (“Effective Date”) by and between Alpha Corp (“Discloser”) and Beta LLC (“Recipient”).
+
+Purpose. The Parties may exchange Confidential Information solely to evaluate a potential business relationship (the “Purpose”).
+
+Confidentiality. Recipient shall keep Confidential Information strictly confidential, use it only for the Purpose, and protect it using at least reasonable safeguards. Confidentiality Exceptions: obligations do not apply to information that is or becomes public without breach, already known without duty, independently developed, or disclosed pursuant to a valid court order or as required by law (with prompt notice and cooperation where permitted).
+
+Intellectual Property; Ownership. Each party retains ownership of its pre-existing IP. Work Product expressly identified as such is owned by Discloser, and Recipient assigns all right, title, and interest in such Work Product, subject to a non-exclusive, royalty-free license to background materials as necessary for use.
+
+Limitation of Liability. Except for willful misconduct, gross negligence, or breach of Section 2 (Confidentiality), each party’s aggregate liability is capped at the fees paid or payable under this Agreement in the twelve (12) months preceding the claim. Neither party is liable for indirect, incidental, special, or consequential damages.
+
+Indemnification. Each party shall indemnify, defend, and hold harmless the other from third‑party claims arising out of its breach of this Agreement, violation of law, or willful misconduct, including reasonable attorneys’ fees.
+
+Injunctive Relief. The Parties agree that breach of Sections 2 or 3 may cause irreparable harm and that the non‑breaching party may seek injunctive or equitable relief without posting bond.
+
+Term and Termination for Convenience. Initial term is one (1) year; thereafter, the Agreement renews for consecutive one‑year terms unless either party gives thirty (30) days’ prior written notice of non‑renewal. Either party may terminate for convenience on thirty (30) days’ prior written notice.
+
+Governing Law; Venue. This Agreement is governed by the laws of the State of Delaware, without regard to conflicts of law principles. The Parties consent to the exclusive jurisdiction and venue of the state and federal courts located in Delaware.
+
+Return/Destruction. Upon request or termination, Recipient will promptly return or securely destroy Confidential Information.
+
+Miscellaneous. Notices must be in writing. This Agreement constitutes the entire agreement and may be amended only in writing signed by both Parties.
+
+IN WITNESS WHEREOF, the Parties have executed this Agreement as of the Effective Date.
+
+Alpha Corp
+Beta LLC

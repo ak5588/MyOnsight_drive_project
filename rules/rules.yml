@@ -1,0 +1,82 @@
+# rules/rules.yml
+
+- id: missing_confidentiality
+  type: missing_keywords
+  severity: high
+  description: "Confidentiality clause appears to be missing."
+  keywords: ["confidential", "confidentiality", "non-disclosure"]
+  rationale: "Without confidentiality terms, protected information may be legally exposed."
+  mock_reference: "Ref: Market-standard NDA practice; Precedent: Placeholder-001"
+
+- id: missing_governing_law
+  type: missing_keywords
+  severity: med
+  description: "Governing law not specified (expected Delaware)."
+  keywords: ["governing law", "delaware"]
+  rationale: "Lack of governing law creates uncertainty in disputes and enforcement."
+  mock_reference: "Ref: Contract drafting basics; Precedent: Placeholder-002"
+
+- id: uncapped_liability
+  type: risky_regex
+  severity: high
+  description: "Liability may be uncapped or broadly stated."
+  # Flags presence of 'liability' without nearby 'cap'/'limited to'
+  pattern: "(liability)(?![^\\n]{0,80}(cap|capped|limit|limited to))"
+  rationale: "Uncapped liability can create unlimited financial exposure."
+  mock_reference: "Ref: Commercial contracting norms; Precedent: Placeholder-003"
+
+- id: missing_indemnity
+  type: missing_keywords
+  severity: med
+  description: "Indemnification clause appears to be missing."
+  keywords: ["indemnify", "indemnification"]
+  rationale: "Indemnity allocates third-party claim risk; missing it shifts exposure."
+  mock_reference: "Ref: Allocation of risk; Precedent: Placeholder-004"
+
+- id: missing_ip
+  type: missing_keywords
+  severity: med
+  description: "Intellectual property ownership/assignment not found."
+  keywords: ["intellectual property", "ip", "assignment", "assign"]
+  rationale: "Ambiguous IP terms can cause ownership disputes."
+  mock_reference: "Ref: IP ownership standards; Precedent: Placeholder-005"
+
+- id: autorenew_gt_12m
+  type: risky_regex
+  severity: med
+  description: "Auto-renew term may exceed 12 months."
+  pattern: "(auto[- ]?renew|automatic renewal)[^\\n]{0,120}(24 months|two years|2 years)"
+  rationale: "Long auto-renew may lock parties into unfavorable terms."
+  mock_reference: "Ref: Renewal norms; Precedent: Placeholder-006"
+
+- id: no_termination_conv
+  type: missing_keywords
+  severity: low
+  description: "Termination for convenience not present."
+  keywords: ["termination for convenience"]
+  rationale: "Without TFC, exiting non-performing deals can be difficult."
+  mock_reference: "Ref: Termination options; Precedent: Placeholder-007"
+
+- id: venue_mismatch
+  type: venue_mismatch
+  severity: med
+  description: "Venue/jurisdiction mentions differ from expected Delaware."
+  other_places: ["california", "new york", "texas", "england", "india", "european union"]
+  rationale: "Mismatched venue can complicate enforcement and litigation."
+  mock_reference: "Ref: Forum selection; Precedent: Placeholder-008"
+
+- id: no_carveouts
+  type: risky_regex
+  severity: low
+  description: "Confidentiality lacks standard carve-outs (e.g., required by law)."
+  pattern: "(confidential|confidentiality)[^\\n]{0,200}(?!.*(required by law|court order|already known|public domain))"
+  rationale: "Carve-outs prevent unfair liability for lawful disclosures."
+  mock_reference: "Ref: NDA carve-outs; Precedent: Placeholder-009"
+
+- id: no_injunctive_relief
+  type: missing_keywords
+  severity: low
+  description: "Injunctive/equitable relief not found."
+  keywords: ["injunctive relief", "equitable relief", "specific performance"]
+  rationale: "Injunctions enable quick court orders to stop breaches."
+  mock_reference: "Ref: Remedies clauses; Precedent: Placeholder-010"
