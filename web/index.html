@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Contract Risk Review (MVP)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="/assets/logo.svg" alt="Logo" />
+      <div>
+        <h1>Contract Risk Review</h1>
+        <p class="muted">NDA-focused MVP — explainable flags with suggested fixes</p>
+      </div>
+    </div>
+    <div class="status">
+      <span id="api-status" class="badge muted">Checking API…</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h2>Analyze Contract</h2>
+      <div class="grid">
+        <label>
+          Jurisdiction
+          <select id="jurisdiction">
+            <option value="delaware" selected>Delaware (US)</option>
+          </select>
+        </label>
+
+        <label class="file-label">
+          Upload .txt
+          <input id="file" type="file" accept=".txt" />
+        </label>
+      </div>
+
+      <label>
+        Contract text
+        <textarea id="text" placeholder="Paste or upload contract text…"></textarea>
+      </label>
+
+      <div class="actions">
+        <button id="btn-review" class="btn primary">Review</button>
+        <button id="btn-clear" class="btn">Clear</button>
+        <div class="spacer"></div>
+        <button id="btn-load-risky" class="btn ghost">Load risky sample</button>
+        <button id="btn-load-good" class="btn ghost">Load good sample</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Results</h2>
+      <div id="summary" class="summary"></div>
+      <div id="issues" class="issues"></div>
+      <details class="raw">
+        <summary>Raw response</summary>
+        <pre id="raw">—</pre>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span class="muted">MVP: NDA/Delaware, 10 rules, regex-based; not legal advice.</span>
+  </footer>
+
+  <script>
+    window.API_BASE = "http://127.0.0.1:5000";
+  </script>
+  <script src="/app.js"></script>
+</body>
+</html>

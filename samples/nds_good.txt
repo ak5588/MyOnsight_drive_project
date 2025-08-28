@@ -1,0 +1,43 @@
+This Non-Disclosure Agreement (“Agreement”) is entered into as of August 1, 2025 (“Effective Date”) by and between MyOnsite Healthcare, LLC, a Delaware limited liability company (“Discloser”), and Vertex Systems, Inc., a Delaware corporation (“Recipient”).
+
+Purpose. The parties may exchange Confidential Information solely to evaluate a potential services partnership between Discloser and Recipient (the “Purpose”).
+
+Confidentiality.
+a) Obligations. Recipient shall keep Confidential Information strictly confidential, use it only for the Purpose, and protect it using safeguards at least as strong as those it uses for its own similar information and no less than reasonable care.
+b) Carve‑outs. These obligations do not apply to information that (i) becomes public through no fault of Recipient, (ii) was known to Recipient without duty of confidentiality before receipt, (iii) is independently developed by Recipient without use of Discloser’s information, or (iv) is disclosed under a valid court order or legal requirement, with prompt notice and cooperation to seek protective treatment where permitted.
+
+Permitted Disclosures. Recipient may disclose Confidential Information to its employees, contractors, and professional advisors who have a need to know for the Purpose and are bound by confidentiality obligations at least as protective as this Agreement.
+
+Intellectual Property; Ownership. Each party retains all right, title, and interest in its pre‑existing materials and intellectual property. Any deliverables expressly identified in writing as “Work Product” for Discloser are owned by Discloser, and Recipient hereby assigns to Discloser all right, title, and interest therein, subject to a non‑exclusive, royalty‑free license for Recipient’s background materials solely as necessary for Discloser’s use of such Work Product.
+
+Return or Destruction. Upon request or termination, Recipient will promptly return or securely destroy all Confidential Information (including copies) and, upon request, certify destruction, except that one archival copy may be retained solely for legal compliance.
+
+Term; Renewal; Termination for Convenience. The initial term is one (1) year from the Effective Date. Thereafter, this Agreement renews automatically for consecutive one‑year terms unless either party gives at least thirty (30) days’ prior written notice of non‑renewal. Either party may terminate this Agreement for convenience on thirty (30) days’ prior written notice.
+
+No License. Except as expressly stated, no license or other rights in any Confidential Information or intellectual property are granted by this Agreement.
+
+Injunctive Relief. The parties agree that a breach of Sections 2–5 may cause irreparable harm for which monetary damages are inadequate; the non‑breaching party may seek injunctive and other equitable relief without posting bond.
+
+Indemnification. Each party shall indemnify, defend, and hold harmless the other party from third‑party claims arising from the indemnifying party’s breach of this Agreement, violation of law, or willful misconduct, including reasonable attorneys’ fees and costs.
+
+Limitation of Liability. Except for (i) breach of confidentiality, (ii) willful misconduct or gross negligence, or (iii) indemnification obligations, in no event will either party’s aggregate liability under this Agreement exceed the fees (if any) paid or payable under this Agreement in the twelve (12) months preceding the event giving rise to liability. Neither party will be liable for any indirect, incidental, special, consequential, or punitive damages.
+
+Export; Compliance. Each party will comply with applicable laws, including export control, data protection, and sanctions laws, in connection with the Purpose.
+
+Governing Law; Venue. This Agreement is governed by the laws of the State of Delaware, without regard to conflicts of law principles. The parties consent to the exclusive jurisdiction and venue of the state and federal courts located in Delaware.
+
+Miscellaneous. Notices must be in writing and sent to the addresses designated by the parties. This Agreement is the entire agreement regarding its subject matter and may be amended only in a writing signed by both parties. If any provision is held unenforceable, it will be modified to the minimum extent necessary to be enforceable, and the remainder will remain in effect. Neither party may assign this Agreement without the other party’s prior written consent, except to an affiliate or in connection with a merger, acquisition, or sale of substantially all assets.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the Effective Date.
+
+MyOnsite Healthcare, LLC (Discloser)
+By: __________________________
+Name: Priya Mehta
+Title: Chief Operating Officer
+Date: August 1, 2025
+
+Vertex Systems, Inc. (Recipient)
+By: __________________________
+Name: Daniel Ruiz
+Title: VP, Partnerships
+Date: August 1, 2025

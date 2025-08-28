@@ -1,23 +1,27 @@
 import os
 import re
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import yaml
 
-# ----------------------------
-# Config
-# ----------------------------
+# CORS for browser-based frontend
+try:
+    from flask_cors import CORS
+    USE_CORS = True
+except Exception:
+    USE_CORS = False
+
 SEVERITY_WEIGHTS = {"low": 1, "med": 3, "high": 5}
 DEFAULT_JURISDICTION = "delaware"
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 RULES_PATH = os.path.join(ROOT_DIR, "rules", "rules.yml")
 SUGGESTED_FIXES_PATH = os.path.join(ROOT_DIR, "data", "suggested_fixes.json")
+WEB_DIR = os.path.join(ROOT_DIR, "web")
 
-# ----------------------------
-# App factory
-# ----------------------------
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)
+if USE_CORS:
+    CORS(app)
 
 def load_rules():
     if not os.path.exists(RULES_PATH):
@@ -37,9 +41,6 @@ def load_fixes():
 RULES = load_rules()
 SUGGESTED_FIXES = load_fixes()
 
-# ----------------------------
-# Helpers
-# ----------------------------
 def find_any(text_lc, keywords):
     return any(k.lower() in text_lc for k in keywords)
 
@@ -101,9 +102,7 @@ def evaluate_rules(text: str, jurisdiction: str):
 
     return score, counts, issues
 
-# ----------------------------
-# Routes
-# ----------------------------
+# API
 @app.route("/review", methods=["POST"])
 def review():
     data = request.get_json(silent=True) or {}
@@ -122,29 +121,38 @@ def review():
         "issues": issues
     }), 200
 
+# Frontend: serve index.html or health
 @app.route("/", methods=["GET"])
-def health():
+def root_or_health():
+    index = os.path.join(WEB_DIR, "index.html")
+    if os.path.exists(index):
+        return send_from_directory(WEB_DIR, "index.html")
     return jsonify({"status": "ok", "rules_loaded": len(RULES)}), 200
 
+# Serve /styles.css and /app.js from web/
+@app.route("/<path:filename>", methods=["GET"])
+def serve_web_file(filename):
+    path = os.path.join(WEB_DIR, filename)
+    if os.path.exists(path):
+        return send_from_directory(WEB_DIR, filename)
+    return jsonify({"error": "not found"}), 404
+
+# Serve /assets/*
+@app.route("/assets/<path:filename>", methods=["GET"])
+def serve_assets(filename):
+    return send_from_directory(os.path.join(WEB_DIR, "assets"), filename)
+
+# Serve /samples/*
+@app.route("/samples/<path:filename>", methods=["GET"])
+def serve_samples(filename):
+    return send_from_directory(os.path.join(ROOT_DIR, "samples"), filename)
+
+# Helpful GET for testers
 @app.route("/review", methods=["GET"])
-def review_get_instructions():
-    return jsonify({
-        "message": "Use POST /review with JSON: {\"text\": \"...\"}",
-        "example": {
-            "method": "POST",
-            "url": "/review",
-            "headers": {"Content-Type": "application/json"},
-            "body": {"text": "contract text here"}
-        }
-    }), 405
+def review_get():
+    return jsonify({"message": "Use POST /review with JSON {\"text\": \"...\", \"jurisdiction\": \"delaware\"}"}), 405
 
-
-# ----------------------------
-# Entrypoint
-# ----------------------------
 if __name__ == "__main__":
-    # Use Flask built-in dev server for clearer logs
     port = int(os.environ.get("PORT", 5000))
-    debug = True
     print(f"Starting Flask on http://127.0.0.1:{port}")
-    app.run(host="127.0.0.1", port=port, debug=debug)
+    app.run(host="127.0.0.1", port=port, debug=True)
