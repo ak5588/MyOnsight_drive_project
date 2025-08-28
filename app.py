@@ -4,25 +4,42 @@ import json
 from flask import Flask, request, jsonify
 import yaml
 
+# ----------------------------
 # Config
+# ----------------------------
 SEVERITY_WEIGHTS = {"low": 1, "med": 3, "high": 5}
 DEFAULT_JURISDICTION = "delaware"
 
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+RULES_PATH = os.path.join(ROOT_DIR, "rules", "rules.yml")
+SUGGESTED_FIXES_PATH = os.path.join(ROOT_DIR, "data", "suggested_fixes.json")
+
+# ----------------------------
+# App factory
+# ----------------------------
 app = Flask(__name__)
 
-# Load rules at startup
-RULES_PATH = os.path.join(os.path.dirname(__file__), "rules", "rules.yml")
-SUGGESTED_FIXES_PATH = os.path.join(os.path.dirname(__file__), "data", "suggested_fixes.json")
+def load_rules():
+    if not os.path.exists(RULES_PATH):
+        raise FileNotFoundError(f"Missing rules file at {RULES_PATH}")
+    with open(RULES_PATH, "r", encoding="utf-8") as f:
+        rules = yaml.safe_load(f)
+    if not isinstance(rules, list):
+        raise ValueError("rules.yml must be a list of rule objects")
+    return rules
 
-with open(RULES_PATH, "r", encoding="utf-8") as f:
-    RULES = yaml.safe_load(f)
-
-if os.path.exists(SUGGESTED_FIXES_PATH):
+def load_fixes():
+    if not os.path.exists(SUGGESTED_FIXES_PATH):
+        return {}
     with open(SUGGESTED_FIXES_PATH, "r", encoding="utf-8") as f:
-        SUGGESTED_FIXES = json.load(f)
-else:
-    SUGGESTED_FIXES = {}
+        return json.load(f)
 
+RULES = load_rules()
+SUGGESTED_FIXES = load_fixes()
+
+# ----------------------------
+# Helpers
+# ----------------------------
 def find_any(text_lc, keywords):
     return any(k.lower() in text_lc for k in keywords)
 
@@ -36,81 +53,98 @@ def evaluate_rules(text: str, jurisdiction: str):
     score = 0
 
     for rule in RULES:
-        rid = rule["id"]
-        severity = rule["severity"]
+        rid = rule.get("id", "unknown")
+        severity = rule.get("severity", "low")
         rationale = rule.get("rationale", "")
         mock_ref = rule.get("mock_reference", "Ref: Placeholder-001")
-
+        rtype = rule.get("type", "")
         triggered = False
         message = ""
 
-        # Keyword presence rule
-        if rule.get("type") == "missing_keywords":
+        if rtype == "missing_keywords":
             keywords = rule.get("keywords", [])
             if not find_any(text_lc, keywords):
                 triggered = True
                 message = rule.get("description", f"Missing: {rid}")
 
-        # Regex presence rule
-        elif rule.get("type") == "missing_regex":
+        elif rtype == "missing_regex":
             pattern = rule.get("pattern")
             if pattern and not regex_found(text, pattern):
                 triggered = True
                 message = rule.get("description", f"Missing pattern: {rid}")
 
-        # Risky pattern present
-        elif rule.get("type") == "risky_regex":
+        elif rtype == "risky_regex":
             pattern = rule.get("pattern")
             if pattern and regex_found(text, pattern):
                 triggered = True
                 message = rule.get("description", f"Risky pattern: {rid}")
 
-        # Jurisdiction/venue mismatch (simple)
-        elif rule.get("type") == "venue_mismatch":
+        elif rtype == "venue_mismatch":
             expected = jurisdiction.lower()
-            # If the text contains a different common state/country word, flag
-            others = rule.get("other_places", [])
-            if any(p.lower() in text_lc for p in others) and expected not in text_lc:
+            others = [p.lower() for p in rule.get("other_places", [])]
+            if any(p in text_lc for p in others) and expected not in text_lc:
                 triggered = True
                 message = rule.get("description", "Venue/jurisdiction mismatch")
 
         if triggered:
+            severity = severity if severity in SEVERITY_WEIGHTS else "low"
             counts[severity] += 1
             score += SEVERITY_WEIGHTS[severity]
-            issue = {
+            issues.append({
                 "id": rid,
                 "severity": severity,
                 "message": message,
                 "rationale": rationale,
                 "mock_reference": mock_ref,
                 "suggested_fix": SUGGESTED_FIXES.get(rid, "")
-            }
-            issues.append(issue)
+            })
 
     return score, counts, issues
 
+# ----------------------------
+# Routes
+# ----------------------------
 @app.route("/review", methods=["POST"])
 def review():
     data = request.get_json(silent=True) or {}
     text = data.get("text", "")
     jurisdiction = (data.get("jurisdiction") or DEFAULT_JURISDICTION).lower()
 
-    if not isinstance(text, str) or len(text.strip()) == 0:
+    if not isinstance(text, str) or not text.strip():
         return jsonify({"error": "text is required"}), 400
-    if len(text) > 500_000:
+    if len(text) > 1_000_000:
         return jsonify({"error": "text too long"}), 400
 
     score, counts, issues = evaluate_rules(text, jurisdiction)
-
-    resp = {
+    return jsonify({
         "risk_score": score,
         "summary": {"high": counts["high"], "med": counts["med"], "low": counts["low"]},
         "issues": issues
-    }
-    return jsonify(resp), 200
+    }), 200
 
+@app.route("/", methods=["GET"])
+def health():
+    return jsonify({"status": "ok", "rules_loaded": len(RULES)}), 200
+
+@app.route("/review", methods=["GET"])
+def review_get_instructions():
+    return jsonify({
+        "message": "Use POST /review with JSON: {\"text\": \"...\"}",
+        "example": {
+            "method": "POST",
+            "url": "/review",
+            "headers": {"Content-Type": "application/json"},
+            "body": {"text": "contract text here"}
+        }
+    }), 405
+
+
+# ----------------------------
+# Entrypoint
+# ----------------------------
 if __name__ == "__main__":
-    # Dev server
-    from waitress import serve
+    # Use Flask built-in dev server for clearer logs
     port = int(os.environ.get("PORT", 5000))
-    serve(app, host="0.0.0.0", port=port)
+    debug = True
+    print(f"Starting Flask on http://127.0.0.1:{port}")
+    app.run(host="127.0.0.1", port=port, debug=debug)
